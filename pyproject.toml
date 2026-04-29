@@ -1,11 +1,9 @@
 [project]
 name = "secure-vibe-app"
 version = "0.1.0"
-description = "Secure Vibe Coding with Semgrep"
+description = "Secure Vibe Coding with FanDuel - Claude Code"
 requires-python = ">=3.11"
 dependencies = [
     "flask>=3.0.0",
 ]
 
-[dependency-groups]
-dev = []

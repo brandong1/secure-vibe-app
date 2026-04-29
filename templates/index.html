@@ -3,143 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Secure Vibe Coding with FanDuel</title>
+  <title>Secure Vibe Coding with FanDuel - Claude Code</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #0d0d1a;
+      background: #080810;
       overflow: hidden;
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
-    /* Animated background */
-    body::before {
-      content: '';
+    /* Animated background orbs */
+    .bg {
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(ellipse at 20% 50%, rgba(255, 82, 40, 0.15) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(148, 0, 255, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse at 60% 80%, rgba(255, 136, 0, 0.1) 0%, transparent 60%);
-      animation: bgPulse 6s ease-in-out infinite alternate;
       pointer-events: none;
+      z-index: 0;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      animation: orbDrift var(--dur, 12s) ease-in-out var(--delay, 0s) infinite alternate;
+    }
+    .orb-1 {
+      width: 700px; height: 700px;
+      left: -200px; top: -200px;
+      background: radial-gradient(circle, rgba(255,82,40,0.25) 0%, transparent 70%);
+      --dur: 13s; --delay: 0s;
+    }
+    .orb-2 {
+      width: 550px; height: 550px;
+      right: -120px; bottom: -120px;
+      background: radial-gradient(circle, rgba(20,147,255,0.2) 0%, transparent 70%);
+      --dur: 15s; --delay: -5s;
+    }
+    .orb-3 {
+      width: 450px; height: 450px;
+      left: 35%; top: 10%;
+      background: radial-gradient(circle, rgba(168,85,247,0.15) 0%, transparent 70%);
+      --dur: 10s; --delay: -3s;
+    }
+    .orb-4 {
+      width: 300px; height: 300px;
+      left: 60%; bottom: 5%;
+      background: radial-gradient(circle, rgba(255,200,0,0.12) 0%, transparent 70%);
+      --dur: 8s; --delay: -7s;
+    }
+    @keyframes orbDrift {
+      0%   { transform: translate(0, 0) scale(1);    opacity: 0.6; }
+      100% { transform: translate(50px, 40px) scale(1.2); opacity: 1; }
     }
 
-    @keyframes bgPulse {
-      0%   { opacity: 0.7; }
-      100% { opacity: 1; }
-    }
-
-    .container {
-      text-align: center;
-      position: relative;
+    /* Scanline texture */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,107,53,0.013) 2px,
+        rgba(255,107,53,0.013) 4px
+      );
+      pointer-events: none;
       z-index: 1;
-      padding: 2rem;
+      animation: scanScroll 12s linear infinite;
     }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #ff6b35;
-      border: 1px solid rgba(255, 107, 53, 0.4);
-      padding: 0.35rem 1rem;
-      border-radius: 999px;
-      margin-bottom: 2rem;
-      animation: fadeSlideDown 0.8s ease both;
-    }
-
-    @keyframes fadeSlideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .headline {
-      font-size: clamp(2rem, 6vw, 5rem);
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      position: relative;
-      animation: fadeSlideUp 0.9s ease 0.2s both;
-    }
-
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .word-secure {
-      display: block;
-      background: linear-gradient(90deg, #ff6b35, #ff9500, #ff6b35, #ff4500);
-      background-size: 300% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradientShift 3s linear infinite;
-    }
-
-    .word-vibe {
-      display: block;
-      background: linear-gradient(90deg, #ff9500, #ffcc00, #ff9500, #ff6b35);
-      background-size: 300% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradientShift 3s linear infinite reverse;
-    }
-
-    .word-coding {
-      display: block;
-      color: #f0f0f0;
-      text-shadow: 0 0 40px rgba(255, 107, 53, 0.3);
-    }
-
-    .word-with {
-      display: inline;
-      font-size: 0.5em;
-      font-weight: 400;
-      color: #888;
-      letter-spacing: 0.1em;
-    }
-
-    .word-semgrep {
-      display: block;
-      background: linear-gradient(90deg, #ff4500, #ff6b35, #ff9a00, #ff6b35, #ff4500);
-      background-size: 400% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradientShift 2s linear infinite;
-      filter: drop-shadow(0 0 30px rgba(255, 107, 53, 0.6));
-    }
-
-    @keyframes gradientShift {
-      0%   { background-position: 0% 50%; }
-      100% { background-position: 300% 50%; }
-    }
-
-    /* Glow pulse on the whole headline */
-    .headline {
-      animation: fadeSlideUp 0.9s ease 0.2s both, glowPulse 3s ease-in-out 1.5s infinite;
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.2)); }
-      50%       { filter: drop-shadow(0 0 60px rgba(255, 107, 53, 0.55)); }
-    }
-
-    .subline {
-      margin-top: 1.5rem;
-      color: #666;
-      font-size: 1rem;
-      letter-spacing: 0.05em;
-      animation: fadeSlideUp 0.9s ease 0.5s both;
+    @keyframes scanScroll {
+      from { background-position: 0 0; }
+      to   { background-position: 0 500px; }
     }
 
     /* Particles */
@@ -147,86 +85,301 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
+      z-index: 2;
       overflow: hidden;
     }
-
-    .particle {
+    .p {
       position: absolute;
-      width: 4px;
-      height: 4px;
+      opacity: 0;
+      animation: pRise var(--dur, 5s) ease-in var(--delay, 0s) infinite;
+    }
+    .p.star {
+      width: var(--sz, 6px);
+      height: var(--sz, 6px);
+      background: var(--c, #ff6b35);
+      clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+    }
+    .p.dot {
+      width: var(--sz, 4px);
+      height: var(--sz, 4px);
+      border-radius: 50%;
+      background: var(--c, #ff9500);
+      box-shadow: 0 0 8px 2px var(--c, #ff9500);
+    }
+    @keyframes pRise {
+      0%   { opacity: 0; transform: translate(0,0) scale(0) rotate(0deg); }
+      15%  { opacity: 1; transform: translate(var(--dx,0px), -25px) scale(1) rotate(60deg); }
+      70%  { opacity: 0.8; transform: translate(calc(var(--dx,0px)*1.5), var(--t1,-130px)) scale(0.7) rotate(220deg); }
+      100% { opacity: 0; transform: translate(calc(var(--dx,0px)*2.2), var(--t2,-220px)) scale(0) rotate(400deg); }
+    }
+
+    /* Main container */
+    .container {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 3rem 2rem;
+      max-width: 960px;
+      width: 100%;
+    }
+
+    /* Pulse ring */
+    .ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,107,53,0.2);
+      animation: ringExpand 4s ease-out 1.5s infinite;
+      pointer-events: none;
+    }
+    .ring:nth-child(2) { animation-delay: 2.5s; border-color: rgba(20,147,255,0.15); }
+    @keyframes ringExpand {
+      0%   { transform: translate(-50%,-50%) scale(1); opacity: 0.6; }
+      100% { transform: translate(-50%,-50%) scale(8); opacity: 0; }
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #ff6b35;
+      border: 1px solid rgba(255,107,53,0.3);
+      padding: 0.4rem 1.2rem;
+      border-radius: 999px;
+      margin-bottom: 2.5rem;
+      background: rgba(255,107,53,0.06);
+      backdrop-filter: blur(6px);
+      animation: fadeDown 0.9s ease both;
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
       border-radius: 50%;
       background: #ff6b35;
-      opacity: 0;
-      animation: sparkle var(--dur, 4s) ease-in-out var(--delay, 0s) infinite;
+      box-shadow: 0 0 8px #ff6b35;
+      animation: dotBlink 1.5s ease-in-out infinite;
+    }
+    @keyframes dotBlink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-22px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .particle:nth-child(odd)  { background: #ff9500; width: 3px; height: 3px; }
-    .particle:nth-child(3n)   { background: #ffcc00; width: 2px; height: 2px; }
-    .particle:nth-child(5n)   { background: #ff4500; width: 5px; height: 5px; }
-
-    @keyframes sparkle {
-      0%   { opacity: 0; transform: translateY(0) scale(0); }
-      20%  { opacity: 1; transform: translateY(-20px) scale(1); }
-      80%  { opacity: 0.6; transform: translateY(var(--travel, -120px)) scale(0.6); }
-      100% { opacity: 0; transform: translateY(var(--travel, -200px)) scale(0); }
+    /* Headline words */
+    .headline {
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      animation: fadeUp 0.9s ease 0.25s both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* Scanline shimmer overlay */
-    .shimmer {
+    .word {
+      display: block;
+      font-weight: 900;
+    }
+
+    /* SECURE — Semgrep orange */
+    .secure {
+      font-size: clamp(3.5rem, 10vw, 7.5rem);
+      background: linear-gradient(90deg, #ff4500, #ff6b35, #ffaa00, #ff6b35, #ff4500);
+      background-size: 400% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradShift 3s linear infinite;
+      filter: drop-shadow(0 0 45px rgba(255,107,53,0.55));
+    }
+
+    /* VIBE — warm amber */
+    .vibe {
+      font-size: clamp(4.5rem, 13vw, 9.5rem);
+      background: linear-gradient(90deg, #ffcc00, #ff9500, #ff6b35, #ff9500, #ffcc00);
+      background-size: 400% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradShift 2.4s linear infinite reverse;
+      filter: drop-shadow(0 0 60px rgba(255,180,0,0.55));
+    }
+
+    /* CODING — white with subtle glow */
+    .coding {
+      font-size: clamp(3rem, 8.5vw, 6.5rem);
+      color: #efefef;
+      text-shadow:
+        0 0 30px rgba(255,107,53,0.35),
+        0 0 90px rgba(255,107,53,0.15);
+      animation: fadeUp 0.9s ease 0.25s both, textPulse 3.5s ease-in-out 2s infinite;
+    }
+    @keyframes textPulse {
+      0%, 100% { text-shadow: 0 0 30px rgba(255,107,53,0.35), 0 0 90px rgba(255,107,53,0.15); }
+      50%       { text-shadow: 0 0 60px rgba(255,107,53,0.7), 0 0 140px rgba(255,107,53,0.35); }
+    }
+
+    @keyframes gradShift {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 400% 50%; }
+    }
+
+    /* "with" connector */
+    .connector {
+      display: block;
+      font-size: clamp(1rem, 2.5vw, 2rem);
+      font-weight: 300;
+      color: #444;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin: 0.4rem 0;
+    }
+
+    /* FANDUEL — FanDuel blue */
+    .fanduel {
+      font-size: clamp(3rem, 9vw, 7rem);
+      background: linear-gradient(90deg, #0050ff, #1478fa, #00d4ff, #1478fa, #0050ff);
+      background-size: 400% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradShift 3.5s linear infinite;
+      filter: drop-shadow(0 0 45px rgba(20,120,250,0.6));
+    }
+
+    /* dash separator */
+    .sep {
+      display: block;
+      font-size: clamp(1.5rem, 4vw, 3.5rem);
+      font-weight: 100;
+      color: rgba(255,255,255,0.12);
+      letter-spacing: 0.5em;
+      margin: 0.25rem 0;
+    }
+
+    /* CLAUDE CODE — purple/pink gradient */
+    .claude {
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      background: linear-gradient(90deg, #a855f7, #ec4899, #f97316, #ec4899, #a855f7);
+      background-size: 400% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradShift 4s linear infinite reverse;
+      filter: drop-shadow(0 0 40px rgba(168,85,247,0.55));
+    }
+
+    /* Rainbow glow bar */
+    .glow-bar {
+      height: 2px;
+      width: 260px;
+      margin: 2.2rem auto 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff4500, #ff9500, #1478fa, #a855f7, #ff4500);
+      background-size: 400% 100%;
+      animation: gradShift 3s linear infinite, fadeUp 0.9s ease 0.8s both;
+      box-shadow: 0 0 16px rgba(255,107,53,0.5);
+    }
+
+    /* Subline */
+    .subline {
+      margin-top: 1.5rem;
+      color: #4a4a5a;
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      letter-spacing: 0.08em;
+      animation: fadeUp 0.9s ease 1s both;
+    }
+
+    /* Footer */
+    .footer {
       position: fixed;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(255, 107, 53, 0.015) 2px,
-        rgba(255, 107, 53, 0.015) 4px
-      );
-      pointer-events: none;
-      animation: shimmerMove 8s linear infinite;
+      bottom: 1.5rem;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #2a2a3a;
+      z-index: 10;
+      animation: fadeUp 1s ease 1.4s both;
     }
+    .footer .hl { color: #ff6b35; }
 
-    @keyframes shimmerMove {
-      from { background-position: 0 0; }
-      to   { background-position: 0 200px; }
+    @media (max-width: 480px) {
+      .badge { font-size: 0.58rem; letter-spacing: 0.18em; }
     }
   </style>
 </head>
 <body>
 
-  <div class="shimmer"></div>
-
+  <!-- Background -->
+  <div class="bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+  <div class="scanlines"></div>
   <div class="particles" id="particles"></div>
 
+  <!-- Content -->
   <div class="container">
-    <div class="badge">Static Analysis · Security · Speed</div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Static Analysis &bull; Security &bull; Speed
+    </div>
 
     <h1 class="headline">
-      <span class="word-secure">Secure</span>
-      <span class="word-vibe">Vibe</span>
-      <span class="word-coding">Coding</span>
-      <span class="word-coding" style="font-size:0.45em; font-weight:400; color:#666; letter-spacing:0.15em;">with</span>
-      <span class="word-semgrep">FanDuel</span>
+      <span class="word secure">Secure</span>
+      <span class="word vibe">Vibe</span>
+      <span class="word coding">Coding</span>
+      <span class="connector">with</span>
+      <span class="word fanduel">FanDuel</span>
+      <span class="sep">&mdash;</span>
+      <span class="word claude">Claude Code</span>
     </h1>
 
+    <div class="glow-bar"></div>
     <p class="subline">Find bugs before attackers do &mdash; at the speed of thought.</p>
   </div>
 
-  <script>
-    const container = document.getElementById('particles');
-    const count = 60;
+  <div class="footer">Powered by <span class="hl">Semgrep</span> &bull; Secured by default</div>
 
-    for (let i = 0; i < count; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.cssText = [
-        `left: ${Math.random() * 100}%`,
-        `top: ${40 + Math.random() * 40}%`,
-        `--dur: ${3 + Math.random() * 5}s`,
-        `--delay: ${Math.random() * 6}s`,
-        `--travel: ${-(80 + Math.random() * 160)}px`,
-      ].join(';');
-      container.appendChild(p);
+  <script>
+    const wrap = document.getElementById('particles');
+    const colors = [
+      '#ff4500','#ff6b35','#ff9500','#ffcc00',
+      '#ff4500','#ff6b35','#ff9500',
+      '#1478fa','#00d4ff',
+      '#a855f7','#ec4899',
+    ];
+
+    function r(a, b) { return a + Math.random() * (b - a); }
+
+    for (let i = 0; i < 45; i++) {
+      const el = document.createElement('div');
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      el.className = 'p star';
+      el.style.cssText = `left:${r(5,95)}%;top:${r(25,78)}%;--sz:${r(4,9)}px;--c:${c};--dur:${r(3,7)}s;--delay:${r(0,8)}s;--dx:${r(-35,35)}px;--t1:${-r(80,180)}px;--t2:${-r(160,280)}px`;
+      wrap.appendChild(el);
+    }
+
+    for (let i = 0; i < 90; i++) {
+      const el = document.createElement('div');
+      const c = colors[Math.floor(Math.random() * colors.length)];
+      el.className = 'p dot';
+      el.style.cssText = `left:${r(2,98)}%;top:${r(15,88)}%;--sz:${r(2,5)}px;--c:${c};--dur:${r(2.5,6)}s;--delay:${r(0,9)}s;--dx:${r(-20,20)}px;--t1:${-r(60,150)}px;--t2:${-r(120,240)}px`;
+      wrap.appendChild(el);
     }
   </script>
 </body>
